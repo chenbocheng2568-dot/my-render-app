@@ -15,8 +15,17 @@ import pandas as pd
 from .kinematics import Point2D, compute_joint_angles, safe_nanmax, safe_nanmean, safe_nanmin
 
 
-POSE_LANDMARKS = mp.solutions.pose.PoseLandmark
-POSE_CONNECTIONS = mp.solutions.pose.POSE_CONNECTIONS
+try:
+    mp_pose = mp.solutions.pose
+    mp_drawing = mp.solutions.drawing_utils
+except AttributeError:
+    # Some hosted environments expose the solutions modules under mediapipe.python.
+    from mediapipe.python.solutions import drawing_utils as mp_drawing
+    from mediapipe.python.solutions import pose as mp_pose
+
+
+POSE_LANDMARKS = mp_pose.PoseLandmark
+POSE_CONNECTIONS = mp_pose.POSE_CONNECTIONS
 
 LANDMARK_NAME_MAP = {
     landmark.value: landmark.name.lower()
@@ -52,7 +61,7 @@ class PoseVideoAnalyzer:
     def __init__(self, output_root: Path) -> None:
         self.output_root = output_root
         self.output_root.mkdir(parents=True, exist_ok=True)
-        self.drawer = mp.solutions.drawing_utils
+        self.drawer = mp_drawing
 
     def analyze_video(self, video_path: Path, task_name: str, config: AnalysisConfig) -> AnalysisArtifacts:
         task_dir = self.output_root / task_name
@@ -82,7 +91,7 @@ class PoseVideoAnalyzer:
         sample_frame_bytes: List[bytes] = []
         sample_indices = self._build_sample_indices(total_frames)
 
-        with mp.solutions.pose.Pose(
+        with mp_pose.Pose(
             static_image_mode=False,
             model_complexity=config.model_complexity,
             smooth_landmarks=True,
