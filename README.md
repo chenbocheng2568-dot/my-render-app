@@ -77,6 +77,19 @@
 - [Render Docker 部署](https://render.com/docs/docker)
 - [Render Persistent Disks](https://render.com/docs/disks)
 
+## 部署到 Streamlit Community Cloud
+
+本项目已补充：
+
+- `runtime.txt` 固定 Python 3.11
+- `packages.txt` 安装 OpenCV / MediaPipe 运行所需系统库
+
+如果在 Streamlit Community Cloud 上部署失败，优先检查：
+
+- 是否正确识别 `app.py` 为入口文件
+- 构建日志中是否出现 Python 版本不匹配
+- `requirements.txt` 中依赖是否成功安装
+
 ### 方式 2: 命令行启动
 
 ```bash
