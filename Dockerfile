@@ -3,7 +3,7 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=1
-ENV APP_DATA_DIR=/app/data
+ENV APP_DATA_DIR=/data/app
 
 WORKDIR /app
 
@@ -21,8 +21,8 @@ RUN python -m pip install --upgrade pip && python -m pip install -r requirements
 
 COPY . .
 
-RUN mkdir -p /app/data/uploads /app/data/outputs
+RUN mkdir -p /data/app/uploads /data/app/outputs
 
-EXPOSE 10000
+EXPOSE 7860
 
-CMD ["sh", "-c", "streamlit run app.py --server.address 0.0.0.0 --server.port ${PORT:-10000} --browser.gatherUsageStats false"]
+CMD ["sh", "-c", "streamlit run app.py --server.address 0.0.0.0 --server.port ${PORT:-7860} --browser.gatherUsageStats false"]

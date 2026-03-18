@@ -1,3 +1,13 @@
+---
+title: 2D Motion Analyzer
+emoji: 🏃
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+suggested_hardware: cpu-basic
+---
+
 # 2D Motion Kinematics Analyzer
 
 本项目是一个本地运行的二维人体运动学分析工具。用户上传视频后，系统会自动识别人身体关键点，建立二维骨架模型，计算关节角度与关键点轨迹，并导出分析结果。
@@ -89,6 +99,29 @@
 - 是否正确识别 `app.py` 为入口文件
 - 构建日志中是否出现 Python 版本不匹配
 - `requirements.txt` 中依赖是否成功安装
+
+## 部署到 Hugging Face Spaces
+
+推荐使用 Docker Space。Hugging Face 官方说明，Docker Space 需要在仓库根目录的 `README.md` 顶部加入 YAML 配置，并通过 `Dockerfile` 启动服务；默认对外端口可通过 `app_port` 配置，例如 `7860`。
+
+当前项目已适配：
+
+- `sdk: docker`
+- `app_port: 7860`
+- 容器内默认数据目录为 `/data/app`
+
+部署步骤：
+
+1. 在 Hugging Face 创建一个新 Space。
+2. SDK 选择 `Docker`。
+3. 将 Space 仓库关联到当前 GitHub 仓库，或将当前仓库内容上传到该 Space。
+4. 等待 Hugging Face 自动构建镜像并启动。
+5. 启动后直接通过 Hugging Face 提供的网址访问。
+
+参考：
+
+- [Docker Spaces](https://huggingface.co/docs/hub/spaces-sdks-docker)
+- [Spaces 配置参考](https://huggingface.co/docs/hub/en/spaces-config-reference)
 
 ### 方式 2: 命令行启动
 
