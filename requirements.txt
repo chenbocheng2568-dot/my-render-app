@@ -3,4 +3,3 @@ mediapipe==0.10.32
 opencv-python-headless==4.11.0.86
 numpy==2.2.4
 pandas==2.3.0
-plotly==6.5.2

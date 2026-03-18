@@ -6,7 +6,6 @@ from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
-import plotly.express as px
 import streamlit as st
 
 from motion_analyzer.pose_analyzer import AnalysisConfig, PoseVideoAnalyzer
@@ -113,17 +112,9 @@ if st.button("开始分析", type="primary", use_container_width=True):
     )
 
     if selected_metrics:
-        plot_df = make_long_table(artifacts.kinematics_df, selected_metrics)
-        fig = px.line(
-            plot_df,
-            x="time_s",
-            y="value_deg",
-            color="metric",
-            labels={"time_s": "时间 (s)", "value_deg": "角度 (deg)", "metric": "指标"},
-            title="运动学时间序列",
-        )
-        fig.update_layout(height=520, legend_title_text="")
-        st.plotly_chart(fig, use_container_width=True)
+        chart_df = artifacts.kinematics_df[["time_s", *selected_metrics]].copy()
+        chart_df = chart_df.dropna(how="all", subset=selected_metrics).set_index("time_s")
+        st.line_chart(chart_df, height=520, use_container_width=True)
 
     st.subheader("关键结果摘要")
     st.json(summary, expanded=False)
